@@ -40,7 +40,7 @@
 <script type="text/template" id="item-template">
     <div class="view">
         <input class="toggle" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
-        <label title="创建时间:<%- createtime %> 完成时间：<%- donetime %>"><%- title %></label>
+        <label title="<%= createtime ? '创建时间：' + createtime : '' %> <%= donetime ? '完成时间：' + donetime : '' %> "><%- title %></label>
         <a class="destroy"></a> 
     </div>
     <input class="edit" type="text" value="<%= title %>" />

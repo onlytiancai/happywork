@@ -282,7 +282,7 @@ define(function(require, exports, module) {
                 if (e.keyCode != 13) return;
                 if (!this.input.val()) return;
 
-                Todos.create({title: this.input.val(), tag: this.tag});
+                Todos.create({title: this.input.val(), tag: this.tag, createtime:null, donetime:null});
                 this.input.val('');
             },
 
