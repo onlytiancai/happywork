@@ -1,0 +1,64 @@
+<div class="row">
+    <div class="span2 todo-tags">
+        <ul class="nav nav-list ">
+            <li class="nav-header">待办分类</li>
+            <li class="active"><a href="#tag/all">全部</a></li>
+        </ul>
+        <br>
+        <p><input type="text" class="new-tag input-small" placeholder="新分类 "></p>
+    </div>
+    <div class="span8" id="todoapp">
+        <div class="message-container"></div>
+
+        <ul class="nav nav-tabs todo-nav">
+        </ul>
+        <div class="btn-toolbar archived-bar">
+            <div class="btn-group">
+                <button class="btn thisweek">回到本周</button>
+                <button class="btn preweek">前一周</button>
+                <button class="btn nextweek">下一周</button>
+            </div>
+        </div>
+        <div class="todo-body">
+            <header>
+            <p class="todo-info"></p>
+            <input id="new-todo" class="input-xxlarge" type="text" placeholder="记录下你需要做的事情?">
+            </header>
+
+            <section id="main">
+            <ul id="todo-list"></ul>
+            </section>
+
+            <footer>
+            </footer>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- Templates -->
+
+<script type="text/template" id="item-template">
+    <div class="view">
+        <input class="toggle" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
+        <label><%- title %></label>
+        <a class="destroy"></a> 
+    </div>
+    <input class="edit" type="text" value="<%= title %>" />
+</script>
+
+<script type="text/template" id="stats-template">
+    <div class="todo-count">还有<b><%= remaining %></b>项事情没有完成</div>
+</script>
+<script type="text/template" id="todo-nav-template">
+    <li class="pull-right <% if (archived) { %> active <%}%> "  ><a href="#tag/<%- tag %>/archived">已完成事项</a></li>
+    <li class="pull-right <% if (!archived) { %> active <%}%> "  > <a
+        href="#tag/<%- tag %>">待办事项</a> </li>
+</script>
+<script type="text/template" id="message-template">
+<div class="<%- type %>">
+    <button type="button" class="close" data-dismiss="<%- type %>">&times;</button>
+    <%- message %>
+</div>
+</script>
