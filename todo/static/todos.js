@@ -189,6 +189,7 @@ define(function(require, exports, module) {
 
             // Our template for the line of statistics at the bottom of the app.
             statsTemplate: _.template($('#stats-template').html()),
+            navTemplate: _.template($('#todo-nav-template').html()),
 
             // Delegated events for creating new items, and clearing completed ones.
             events: {
@@ -231,6 +232,16 @@ define(function(require, exports, module) {
             render: function() {
                 var done = Todos.done().length;
                 var remaining = Todos.remaining().length;
+
+                $('.todo-nav').html(this.navTemplate({tag: app.tag, archived:app.show_archived}));
+                if (app.show_archived){
+                    $('#new-todo').hide();
+                    $('.archived-bar').show();
+                }else{
+                    $('#new-todo').show();
+                    $('.archived-bar').hide();
+                }
+
                 
                 if (!this.show_archived){
                     $('.todo-info').html('您正在查看当前的待办事项');
@@ -298,10 +309,12 @@ define(function(require, exports, module) {
                 this.$('.new-tag').val('');
             },
             render: function(){
-                this.$('.tag').remove();
+                $(this.$('.nav-list')).empty();
+                $(this.$('.nav-list')).append('<li class="nav-header">待办分类</li>');
+                $(this.$('.nav-list')).append('<li  '+ ('all' == app.tag ? 'class="active"' : '') +'><a href="#tag/all">全部</a></li>');
                 Tags.each(function(tag){
                     tag = tag.get('tag');
-                    $(this.$('.nav-list')).append('<li><a class="tag" href="#tag/'+tag+'">'+tag+'</a></li>');
+                    $(this.$('.nav-list')).append('<li '+ (tag == app.tag ? 'class="active"' : '') +'><a class="tag" href="#tag/'+tag+'">'+tag+'</a></li>');
                 });
             }
         });
@@ -309,30 +322,17 @@ define(function(require, exports, module) {
         var tagsView = new TagsView();
         var app = new AppView();
         var Router = Backbone.Router.extend({
-            navTemplate: _.template($('#todo-nav-template').html()),
             routes: {
                 '': 'index',
                 'tag/:tag': 'index',
                 'tag/:tag/archived': 'archived',
                 'tag/:tag/archived/:day': 'archived'
             },
-            setNavStatus: function(tag, archived){
-                $('.todo-tags a[href="#tag/'+tag+'"]').parents('li').addClass('active');
-                $('.todo-tags a[href!="#tag/'+tag+'"]').parents('li').removeClass('active');
-                $('.todo-nav').html(this.navTemplate({tag: tag, archived:archived}));
-                if (archived){
-                    $('#new-todo').hide();
-                    $('.archived-bar').show();
-                }else{
-                    $('#new-todo').show();
-                    $('.archived-bar').hide();
-                }
-            },
             index: function(tag){
                 tag = tag || 'all'
                 app.tag = tag;
                 app.show_archived = false;
-                this.setNavStatus(tag);
+                tagsView.render();
 
                 var args = {archived:0};
                 if (tag != 'all') args.tag = tag;
@@ -344,7 +344,7 @@ define(function(require, exports, module) {
                 app.tag = tag;
                 app.day = day;
                 app.show_archived = true;
-                this.setNavStatus(tag, true);
+                tagsView.render();
 
                 var args = {archived: 1, archivetime: day};
                 if (tag != 'all') args.tag = tag;
