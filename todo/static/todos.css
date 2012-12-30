@@ -46,7 +46,8 @@
 }
 
 #todo-list li {
-	padding: 18px 20px 18px 0;
+    line-height:1.2em;
+	padding: 18px 20px 23px 0;
 	position: relative;
 	font-size: 24px;
 	border-bottom: 1px solid #cccccc;
@@ -59,25 +60,6 @@
 #todo-list li.done label {
 	color: #777777;
 	text-decoration: line-through;
-}
-
-#todo-list .destroy {
-    position: absolute;
-    right: 5px;
-    top: 20px;
-    display: none;
-    cursor: pointer;
-    width: 20px;
-    height: 20px;
-    background: url(destroy.png) no-repeat;
-}
-
-#todo-list li:hover .destroy {
-    display: block;
-}
-
-#todo-list .destroy:hover {
-    background-position: 0 -20px;
 }
 
 
@@ -177,5 +159,12 @@
 }
 #todo-list li .view input{
     margin:0;
+}
+#todo-list li .view .popover{
+    font-size: 14px;
+}
+#todo-list li .view .status{
+    background-color: #eee;
+    font-size: 12px;
 }
 /* end onlytiancai add*/

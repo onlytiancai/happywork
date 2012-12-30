@@ -1,10 +1,22 @@
 define(function(require, exports, module) {
     var Backbone = require('backbone');
     var _ = require('underscore');
-    var $ = require('jquery');
     var moment = require('moment');
     var Cookie = require('cookie');
+    require('./moment-zh-cn.js');
+    
+    moment.lang('zh-cn');
 
+    var tpl = require('./index.html');
+    $('.main-body').html(tpl);
+
+    require('./bootstrap-datepicker/js/bootstrap-datepicker.js')
+    require('./bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js')
+    require('./bootstrap-datepicker/css/datepicker.css')
+
+    $('body').click(function(){
+        $("a[rel=popover]") .popover('hide');
+    });
     
 
     // An example Backbone application contributed by
@@ -50,12 +62,22 @@ define(function(require, exports, module) {
             toggle: function() {
                 var done = !this.get("done"); 
                 if (done){
-                    var archivetime = moment().day(1).format("YYYY-MM-DD") 
-                    this.save({done: done, donetime:moment().format("YYYY-MM-DD hh:mm:ss"),archived: true, archivetime:archivetime});
+                    var archivetime = moment().day(1).format("YYYY-MM-DD");
+                    var donetime = moment().format("YYYY-MM-DD HH:mm:ss");
+                    this.save({done: done, donetime: donetime,archived: true, archivetime:archivetime});
                 }else{
                     this.save({done: done, archived: false});
                 }
             },
+            setStart: function(){
+                var starttime = moment().local().format("YYYY-MM-DD HH:mm:ss");
+                this.save({started: true, starttime: starttime});
+            },
+            setdeadline: function(date){
+                var deadlinetime= moment(date).local().hours(0).minutes(0).format("YYYY-MM-DD HH:mm:ss");
+                this.save({deadlinetime: deadlinetime});
+            },
+
 
             // Remove this Todo from *localStorage* and delete its view.
             clear: function() {
@@ -121,8 +143,13 @@ define(function(require, exports, module) {
                 "click .toggle"   : "toggleDone",
                 "dblclick .view"  : "edit",
                 "click a.destroy" : "clear",
+                "click a.setstart" : "setstart",
+                "click a.setdeadline" : "showdatepicker",
                 "keypress .edit"  : "updateOnEnter",
-                "blur .edit"      : "close"
+                "blur .edit"      : "close",
+                "click .operation": "operation",
+                "click .popover": "stopPropagation",
+                "changeDate .setdeadline": "setdeadline"
             },
 
             // The TodoView listens for changes to its model, re-rendering. Since there's
@@ -133,10 +160,46 @@ define(function(require, exports, module) {
                 this.model.bind('change:archived', this.remove, this);
                 this.model.bind('destroy', this.remove, this);
             },
+            operation: function(e){
+                $("a[rel=popover]").each(function(){
+                    if (e.target != this)
+                        $(this).popover('hide');
+                });
+
+                this.$('.setdeadline').datepicker({language:'zh-CN', todayBtn: 'linked'});
+                e.preventDefault();
+                e.stopPropagation();
+            },
+            setstart: function(){
+                this.model.setStart();
+            },
+            showdatepicker: function(e){
+                e.preventDefault();
+            },
+            setdeadline: function(ev){
+                $(ev.target).datepicker('hide');
+                this.model.setdeadline(ev.date);
+            },
+            stopPropagation: function(e){
+                e.stopPropagation();
+            },
 
             // Re-render the titles of the todo item.
             render: function() {
                 var model = this.model.toJSON();
+                model.statusline =  '';
+                if (model.done){
+                    model.statusline =  '完成于' + moment(model.donetime, 'YYYY-MM-DD HH:mm:ss').fromNow();
+                }else if (model.deadlinetime){
+                    model.statusline =  '最后期限是' + moment(model.deadlinetime, 'YYYY-MM-DD HH:mm:ss').format('L');
+                }else if (model.started){
+                    model.statusline =  '已经开始了' + moment(model.starttime, 'YYYY-MM-DD HH:mm:ss').fromNow().replace('前','');
+                }else{
+                    if (model.createtime){
+                        model.statusline =  '创建于' + moment(model.createtime, 'YYYY-MM-DD HH:mm:ss').fromNow();
+                    }
+                }
+                model.deadlinetime = model.deadlinetime ? moment(model.deadlinetime, 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
                 model.show_archived = app.show_archived;
                 this.$el.html(this.template(model));
                 this.$el.toggleClass('done', this.model.get('done'));
@@ -261,6 +324,7 @@ define(function(require, exports, module) {
                     this.footer.hide();
                 }
 
+                $("a[rel=popover]").popover({html: true});
             },
 
             // Add a single todo item to the list by creating a view for it, and
@@ -282,7 +346,7 @@ define(function(require, exports, module) {
                 if (e.keyCode != 13) return;
                 if (!this.input.val()) return;
 
-                Todos.create({title: this.input.val(), tag: this.tag, createtime:null, donetime:null});
+                Todos.create({title: this.input.val(), tag: this.tag, createtime:null, donetime:null, started:false});
                 this.input.val('');
             },
 

@@ -39,9 +39,21 @@
 
 <script type="text/template" id="item-template">
     <div class="view">
-        <input class="toggle" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
-        <label title="<%= createtime ? '创建时间：' + createtime : '' %> <%= donetime ? '完成时间：' + donetime : '' %> "><%- title %></label>
-        <a class="destroy"></a> 
+        <div>
+            <input class="toggle" type="checkbox" <%= done ? 'checked="checked"' : '' %> />
+            <label <%= started ? 'class="text-info"' : '' %>><%- title %></label>
+        </div>
+        <div class="status">
+            <div class="pull-right">
+                <%= statusline %>
+                <a href="#" class="operation" rel="popover" data-placement="top"
+                    data-content="
+                    <a class='destroy' href='javascript:;'>删除</a> 
+                    <%= (!started && !done )? "<a class='setstart' href='javascript:;'>开始执行</a>" : '' %>
+                    <%= !done ? "<a class='setdeadline' href='javascript:;' data-date='"+deadlinetime+"' data-date-format='yyyy-mm-dd'>设置最后期限</a>" : '' %>
+                    " data-original-title="操作">操作</a>
+            </div>
+        </div>
     </div>
     <input class="edit" type="text" value="<%= title %>" />
 </script>

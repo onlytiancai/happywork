@@ -8,11 +8,11 @@ ensure_login = web.extensions.ensure_login
 
 
 def _get_userid():
-    userid = 0 
+    userid = 0
     if web.app_extensions.is_login():
         userinfo = web.storage(web.app_extensions.get_userinfo()['data'])
         userid = userinfo.id
-    return userid 
+    return userid
 
 
 class Todo(db.ApiMixin, db.Base):
@@ -23,11 +23,14 @@ class Todo(db.ApiMixin, db.Base):
     tag = Column(String(32))
     createtime = Column(DateTime, nullable=False)
     donetime = Column(DateTime)
+    starttime = Column(DateTime)
+    deadlinetime = Column(DateTime)
     archivetime = Column(DateTime)
 
     title = Column(String(256), nullable=False)
     order = Column(Integer, nullable=False)
     done = Column(Boolean)
+    started = Column(Boolean)
     archived = Column(Boolean)
 
     def on_insert(self, data):
@@ -50,7 +53,7 @@ class Todo(db.ApiMixin, db.Base):
 class TodoTag(db.ApiMixin, db.Base):
     __tablename__ = 'todo_tags'
     id = Column(Integer, primary_key=True)
-    userid= Column(Integer, index=True, nullable=False)
+    userid = Column(Integer, index=True, nullable=False)
     tag = Column(String(32))
 
     def on_insert(self, data):
