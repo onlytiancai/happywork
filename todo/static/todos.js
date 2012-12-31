@@ -193,8 +193,8 @@ define(function(require, exports, module) {
                     model.statusline =  '完成于' + moment(model.donetime, 'YYYY-MM-DD HH:mm:ss').fromNow();
                 }else if (model.deadlinetime){
                     model.statusline =  '最后期限是' + moment(model.deadlinetime, 'YYYY-MM-DD HH:mm:ss').format('L');
-                    if (moment(model.deadlinetime, 'YYYY-MM-DD HH:mm:ss').format('L') <= moment().format('L')){
-                        model.labelstyle = "class='text-warning'";
+                    if (moment(model.deadlinetime, 'YYYY-MM-DD HH:mm:ss').format('L') < moment().format('L')){
+                        model.labelstyle = "class='text-error'";
                     }
                 }else if (model.started){
                     model.statusline =  '已经开始了' + moment(model.starttime, 'YYYY-MM-DD HH:mm:ss').fromNow().replace('前','');
