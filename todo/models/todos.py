@@ -16,7 +16,7 @@ def _get_userid():
 
 
 class Todo(db.ApiMixin, db.Base):
-    __tablename__ = 'todos'
+    __tablename__ = 'todos_v2'
     
     id = Column(Integer, primary_key=True)
     userid = Column(Integer, index=True, nullable=False)
