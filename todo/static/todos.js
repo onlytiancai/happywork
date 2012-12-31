@@ -188,12 +188,17 @@ define(function(require, exports, module) {
             render: function() {
                 var model = this.model.toJSON();
                 model.statusline =  '';
+                model.labelstyle = '';
                 if (model.done){
                     model.statusline =  '完成于' + moment(model.donetime, 'YYYY-MM-DD HH:mm:ss').fromNow();
                 }else if (model.deadlinetime){
                     model.statusline =  '最后期限是' + moment(model.deadlinetime, 'YYYY-MM-DD HH:mm:ss').format('L');
+                    if (moment(model.deadlinetime, 'YYYY-MM-DD HH:mm:ss').format('L') <= moment().format('L')){
+                        model.labelstyle = "class='text-warning'";
+                    }
                 }else if (model.started){
                     model.statusline =  '已经开始了' + moment(model.starttime, 'YYYY-MM-DD HH:mm:ss').fromNow().replace('前','');
+                    model.labelstyle = "class='text-info'";
                 }else{
                     if (model.createtime){
                         model.statusline =  '创建于' + moment(model.createtime, 'YYYY-MM-DD HH:mm:ss').fromNow();
