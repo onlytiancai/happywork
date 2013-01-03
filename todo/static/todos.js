@@ -33,7 +33,7 @@ define(function(require, exports, module) {
         };
 
         if (Cookie.get('sessionid') == undefined){
-            show_message('alert', '您正在使用演示版，所有数据将公开现实，登陆后才能保存自己的待办信息。');
+            show_message('alert', '您正在使用演示版，所有数据将公开显示，登陆后才能保存自己的待办信息。');
         }
         // Todo Model
         // ----------
