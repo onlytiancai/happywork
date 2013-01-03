@@ -20,7 +20,7 @@
 
 ### 部署到本机 
 
-1: 本机安装好mysql，建好库，修改 ./stuff/webappbox_config.py里的响应配置
+1: 本机安装好mysql，建好库，修改 ./stuff/webappbox_config.py里的相应配置
 
 2: 项目初始化
 
