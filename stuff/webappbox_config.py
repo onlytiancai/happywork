@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import logging
+logging.getLogger().setLevel(logging.NOTSET)
 
 sitename = "Happy Work"
 default_app = 'todo'
