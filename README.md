@@ -39,6 +39,8 @@
 
 ### 部署到SAE
 
+如下
+
 1.make init 初始化项目
 1. ./webappbox/src/config.py 里的use_SAE = True
 1. webappbox/src/webapps/login/config.py里的qq和weibo登陆的appkey等需要配置
