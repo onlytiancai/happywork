@@ -20,11 +20,11 @@
 
 ### 部署到本机 
 
-1: 项目初始化
+1: 本机安装好mysql，建好库，修改 ./stuff/webappbox_config.py里的响应配置
+
+2: 项目初始化
 
     make init
-
-2: 本机安装好mysql，修改 ./stuff/webappbox_config.py里的响应配置
 
 3: 安装依赖
 
