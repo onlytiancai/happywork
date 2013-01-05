@@ -199,7 +199,7 @@ define(function(require, exports, module) {
                 }
                 else if (model.deadlinetime){
                     model.statusline =  '最后期限是' + moment(model.deadlinetime, 'YYYY-MM-DD HH:mm:ss').format('L');
-                    if (moment(model.deadlinetime, 'YYYY-MM-DD HH:mm:ss').format('L') < moment().format('L')){
+                    if (moment(model.deadlinetime, 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD') < moment().format('YYYY-MM-DD')){
                         model.labelstyle = "class='text-error'";
                     }
                 }else{
