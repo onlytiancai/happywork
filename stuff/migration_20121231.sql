@@ -1,1 +1,0 @@
-insert into todos_v2(userid, tag, createtime, donetime, starttime, deadlinetime, archivetime, title, `order`, done, started, archived) select userid, tag, createtime, donetime, NULL, NULL, archivetime, title, `order`, done, 0, archived from todos;
