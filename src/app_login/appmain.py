@@ -53,7 +53,3 @@ urls = ["/login", login,
         "/dnspodlogin", dnspodlogin.dnspodlogin,
         "/dnspodcallback", dnspodlogin.dnspodcallback,
         ]
-
-
-web.app_extensions.is_login = account.is_login
-web.app_extensions.get_userinfo = account.get_userinfo

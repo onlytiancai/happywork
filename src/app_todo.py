@@ -5,15 +5,14 @@ from sqlalchemy import Column, Integer, String, DateTime, Boolean
 import web
 
 db = web.extensions.db
-ensure_login = web.extensions.ensure_login
 app_jslink = '<script src="/static/sea-modules/seajs/1.3.0/sea-debug.js" data-main="/static/apps/todo/todo-main"></script>'
 app_desc = '待办列表'
 
 
 def _get_userid():
     userid = 0
-    if web.app_extensions.is_login():
-        userinfo = web.storage(web.app_extensions.get_userinfo()['data'])
+    if web.extensions.is_login():
+        userinfo = web.storage(web.extensions.get_userinfo()['data'])
         userid = userinfo.id
     return userid
 

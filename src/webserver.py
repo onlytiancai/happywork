@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
-
 import web
 import os
 import mimetypes
 import operator
 
 import config
-import extension
 
 curdir = os.path.dirname(__file__)
 menus = []                          # 主菜单，动态生成
@@ -51,7 +49,6 @@ def load_apps():
         map(lambda i: operator.setitem(app_urls, i, '/%s%s' % (app.app_name, app_urls[i])), range(0, len(app_urls), 2))
         urls.extend(app_urls)
 
-extension.load_extensions()
 load_apps()
 app = web.application(urls, globals())
 wsgiapp = app.wsgifunc()
