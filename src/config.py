@@ -3,7 +3,7 @@ import logging
 logging.getLogger().setLevel(logging.NOTSET)
 
 sitename = "Happy Work"
-default_app = 'todo'
+default_app = 'app_todo'
 web_url = ('0.0.0.0', 8803)
 use_SAE = False
 dbname = 'happywork'

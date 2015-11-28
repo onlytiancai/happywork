@@ -19,7 +19,7 @@ render = web.template.render(os.path.join(curdir, 'templates/'))
 class index(object):
     def GET(self, app=None):
         if not app and hasattr(config, 'default_app'):
-            raise web.Redirect('/' + config.default_app + '/index.html')
+            raise web.seeother('/' + config.default_app + '/index.html')
         model = web.storage(jslinks=jslinks, app_jslink=app_jslinks.get(app, ''), menus=menus, sitename=config.sitename)
         web.header('Content-Type', 'text/html; charset=utf-8', unique=True)
         return render.index(model)
@@ -32,9 +32,12 @@ urls = ["/", 'index',
 
 
 def load_apps():
-    import webapps
+    import app_todo
+    from app_login import appmain as app_login
+    apps = [app_todo, app_login]
 
-    for app in webapps.apps:
+    for app in apps:
+        app.app_name = app.__name__
         if hasattr(app, 'app_desc'):  # 如果设置了菜单名则注册到菜单
             menus.append(web.storage(name='/%s/index.html' % app.app_name, desc=app.app_desc))
 
