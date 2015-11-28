@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
+
 from sqlalchemy import Column, Integer, String, DateTime, Boolean
 import web
-from datetime import datetime
 
 db = web.extensions.db
 ensure_login = web.extensions.ensure_login
+app_jslink = '<script src="/static/sea-modules/seajs/1.3.0/sea-debug.js" data-main="/static/apps/todo/todo-main"></script>'
+app_desc = '待办列表'
 
 
 def _get_userid():
@@ -71,3 +74,13 @@ class TodoTag(db.ApiMixin, db.Base):
     def on_delete(self, data):
         data.update(userid=_get_userid())
         return data
+
+
+db.create_all()
+
+urls = [
+        "/todos", Todo,
+        "/todos/([^/]+)", Todo,
+        "/tags", TodoTag,
+        "/tags/([^/]+)", TodoTag,
+        ]
