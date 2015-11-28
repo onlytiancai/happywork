@@ -1,0 +1,9 @@
+name: happywork 
+version: 1
+handlers:
+- url: /static
+  static_dir: static
+- url: /simpleApp/static
+  static_dir: webapps/simpleApp/static
+- url: /login/static
+  static_dir: webapps/login/static

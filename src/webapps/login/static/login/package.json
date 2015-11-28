@@ -1,0 +1,16 @@
+{
+    "name": "login",
+    "version": "1.0.0",
+    "root": "#",
+    "author": "onlytiancai",
+    "dependencies": {
+    },
+    "output": {
+        "login.js": "."
+    },
+    "spmConfig": {
+        "deploy": {
+                "to": "../../"
+            }
+    }
+}
