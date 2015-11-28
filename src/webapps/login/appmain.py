@@ -9,8 +9,8 @@ from . import weibologin
 from . import dnspodlogin
 
 
-app_jslink = '<script src="/static/sea-modules/seajs/1.3.0/sea-debug.js" data-main="/login/static/login-main"></script>'
-jslink = '<script src="/login/static/login.js"></script>'
+app_jslink = '<script src="/static/sea-modules/seajs/1.3.0/sea-debug.js" data-main="/static/apps/login/login-main"></script>'
+jslink = '<script src="/static/apps/login/login.js"></script>'
 
 
 class login(object):

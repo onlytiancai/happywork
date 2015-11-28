@@ -8,27 +8,12 @@ import operator
 import config
 import extension
 
-web.config.debug = True
-
 curdir = os.path.dirname(__file__)
 menus = []                          # 主菜单，动态生成
 app_jslinks = {}                    # 每个app单独加载的js
 jslinks = []                        # 始终会加载的js
 
 render = web.template.render(os.path.join(curdir, 'templates/'))
-
-
-def send_file(file):
-    print file
-    if not os.path.exists(file):
-        raise web.notfound()
-
-    content_type, encoding = mimetypes.guess_type(file)
-    if content_type is not None:
-        web.header('Content-Type', content_type, unique=True)
-
-    with open(file) as f:
-        return f.read()
 
 
 class index(object):
@@ -40,19 +25,8 @@ class index(object):
         return render.index(model)
 
 
-class static(object):
-    def GET(self, file):
-        return send_file(os.path.join(curdir, 'static', file))
-
-
-class appstatic(object):
-    def GET(self, app, file):
-        return send_file(os.path.join(curdir, 'webapps', app, 'static', file))
-
-
 urls = ["/", 'index',
         "/static/(.*)", 'static',               # 静态文件
-        "/([^\/]*)/static/(.*)", 'appstatic',   # app静态文件
         "/([^\/]*)/index.html", 'index',        # app首页
         ]
 
@@ -77,3 +51,4 @@ def load_apps():
 extension.load_extensions()
 load_apps()
 app = web.application(urls, globals())
+wsgiapp = app.wsgifunc()

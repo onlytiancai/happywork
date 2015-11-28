@@ -1,3 +1,1 @@
-#. /home/huhao/.monitor/bin/activate
-curdir=$(cd "$(dirname $0)"; pwd)
-setsid python ${curdir}/run.py > ${curdir}/log/log.log 2>&1 &
+gunicorn webserver:wsgiapp -b 0.0.0.0:8000 -w 4 -D

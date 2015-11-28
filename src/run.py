@@ -1,14 +1,7 @@
 # -*- coding: utf-8 -*-
-from gevent import monkey
-monkey.patch_all()
-from gevent.pywsgi import WSGIServer
 
-import config
-
-
-def start():
-    import webserver
-    WSGIServer(config.web_url, webserver.app.wsgifunc()).serve_forever()
+from webserver import app
+wsgiapp = app.wsgifunc()
 
 if __name__ == '__main__':
-    start()
+    app.run()
